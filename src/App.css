@@ -1,0 +1,136 @@
+/* Jugadores.css */
+
+/* Contenedor principal */
+.jugadores-app {
+  max-width: 960px;
+  margin: 28px auto;
+  padding: 20px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #1f2937; /* gris oscuro */
+  background: linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,252,0.9));
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(15,23,42,0.06);
+}
+
+/* Título */
+.jugadores-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.jugadores-header h1 {
+  font-size: 1.6rem;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* Grid de tarjetas */
+.jugadores-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* Tarjeta de jugador */
+.player-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid rgba(15,23,42,0.04);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  min-height: 88px;
+}
+
+.player-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(15,23,42,0.08);
+}
+
+.player-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #0f172a;
+}
+
+.player-meta {
+  font-size: 0.9rem;
+  color: #475569;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.player-meta .badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(99,102,241,0.08);
+  color: #4f46e5;
+  font-size: 0.78rem;
+  border: 1px solid rgba(79,70,229,0.12);
+}
+
+/* Controles de paginación */
+.paginacion {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.btn {
+  background: #111827;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 120ms ease, opacity 120ms;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+/* Página actual */
+.pagina-info {
+  font-size: 0.94rem;
+  color: #374151;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(15,23,42,0.03);
+}
+
+/* Loader/estado */
+.loading {
+  text-align: center;
+  padding: 30px 0;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 720px) {
+  .jugadores-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .jugadores-app {
+    margin: 16px;
+    padding: 16px;
+  }
+}
