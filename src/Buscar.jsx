@@ -1,61 +1,98 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import './App.css';
 
 export default function Buscar() {
     const [equipo, setEquipo] = useState("1");
+    const [text, setText] = useState("Atlanta Hawks");
+    const [mostrar, setMostrar] = useState("Atlanta Hawks");
+    const [teams, setTeams] = useState([]);
+    const [conference, setConference] = useState("East");
+
     const navigate = useNavigate();
+
+    // Cargar equipos (v1 NO usa token)
+useEffect(() => {
+    fetch("https://api.balldontlie.io/v1/teams", {
+        headers: {
+            Authorization: "d85d9ecb-9902-4eea-9d8b-2c15af5668dc"
+        }
+    })
+    .then(async res => {
+        const text = await res.text();
+        if (!res.ok) throw new Error(text);
+        return JSON.parse(text);
+    })
+    .then(data => setTeams(data.data))
+    .catch(err => console.error("Error cargando equipos:", err));
+}, []);
+
+
 
     const cambioEquipo = (e) => {
         setEquipo(e.target.value);
-    }
+        setText(e.target.options[e.target.selectedIndex].text);
+    };
 
     const rut = () => {
-        navigate(`inicio/${equipo}`);
-    }
+        setMostrar(text);
+        navigate(`${equipo}`);
+    };
+
+    const cambioConf = (e) => {
+        setConference(e.target.value);
+    };
 
     return (
-        <>
+        <><center>
+            
+        </center>
             <div>
-                <h1>Selecciona un equipo aqui</h1>
-                <select name="Equipos" id="teams" value={equipo} onChange={cambioEquipo}>
-                    <option value="1">Atlanta Hawks</option>
-                    <option value="2">Boston Celtics</option>
-                    <option value="3">Brooklyn Nets</option>
-                    <option value="4">Charlotte Hornets</option>
-                    <option value="5">Chicago Bulls</option>
-                    <option value="6">Cleveland Cavaliers</option>
-                    <option value="7">Dallas Mavericks</option>
-                    <option value="8">Denver Nuggets</option>
-                    <option value="9">Detroit Pistons</option>
-                    <option value="10">Golden State Warriors</option>
-                    <option value="11">Houston Rockets</option>
-                    <option value="12">Indiana Pacers</option>
-                    <option value="13">LA Clippers</option>
-                    <option value="14">LA Lakers</option>
-                    <option value="15">Memphis Grizzlies</option>
-                    <option value="16">Miami Heat</option>
-                    <option value="17">Milwaukee Bucks</option>
-                    <option value="18">Minnesota Timberwolves</option>
-                    <option value="19">New Orleans Pelicans</option>
-                    <option value="20">New York Knicks</option>
-                    <option value="21">Oklahoma City Thunder</option>
-                    <option value="22">Orlando Magic</option>
-                    <option value="23">Philadelphia 76ers</option>
-                    <option value="24">Phoenix Suns</option>
-                    <option value="25">Portland Trail Blazers</option>
-                    <option value="26">Sacramento Kings</option>
-                    <option value="27">San Antonio Spurs</option>
-                    <option value="28">Toronto Raptors</option>
-                    <option value="29">Utah Jazz</option>
-                    <option value="30">Washington Wizards</option>
+                <h1>Selecciona un equipo y una conferencia aquí</h1>
 
+                <div className="conference">
+                    <span>
+                        Este 
+                        <input
+                            type="radio"
+                            name="conf"
+                            value="East"
+                            checked={conference === "East"}
+                            onChange={cambioConf}
+                        />
+                    </span>
+
+                    <span>
+                        Oeste 
+                        <input
+                            type="radio"
+                            name="conf"
+                            value="West"
+                            checked={conference === "West"}
+                            onChange={cambioConf}
+                        />
+                    </span>
+                </div>
+
+                <select
+                    name="Equipos"
+                    id="teams"
+                    value={equipo}
+                    onChange={cambioEquipo}
+                >
+                    {teams
+                        .filter(t => t.conference === conference)
+                        .map(t => (
+                            <option key={t.id} value={t.id}>
+                                {t.full_name}
+                            </option>
+                        ))}
                 </select>
             </div>
 
-
             <button onClick={rut}>Buscar</button>
 
-            <Outlet context={{equipo}}/>
+            <Outlet context={{ equipo, mostrar }} />
         </>
     );
 }
